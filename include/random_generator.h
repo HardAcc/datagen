@@ -58,13 +58,21 @@ extern boost::random::ranlux3_01 genFloat;
 // set seed for genDouble
 void set_seed_gen_float(float);
 
-/** Generate a sequence of uniform distributed numbers
-  * width:    The width of the number produced (default = 64).
-  * min:      The minimal value to be generated.
-  * max:      The maximal value to be generated.
-  * <return>  One random number at a time.
-  */
+/* integers in uniform distribution in [min, max]
+ * width:    The width of the number produced (default = 64).
+ * min:      The minimal value to be generated.
+ * max:      The maximal value to be generated.
+ */
 uint64_t random_uint_uniform(uint32_t width = 64, uint64_t min = 0, uint64_t max = UINT64_MAX);
+
+/* double in uniform distribution in [0, 1)
+ */
+double random_double_uniform_01();
+
+/* integers in poisson distribution
+ * mean:    The mean of the poisson distribution
+ */
+uint32_t random_uint_poisson(double mean = 1);
 
 #endif
 

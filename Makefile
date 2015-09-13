@@ -22,7 +22,7 @@ default: all
 # Build rules
 #--------------------------------------------------------------------
 CXX = g++
-CXX_CFLAGS = -Iinclude
+CXX_CFLAGS = -Iinclude -o3 -fPIC -Wall
 
 #--------------------------------------------------------------------
 # Build
@@ -30,10 +30,45 @@ CXX_CFLAGS = -Iinclude
 TARGETS = \
 	generator \
 	uniform_generator \
+	poisson_generator \
 
 TARGET_OBJS = $(addsuffix .o, $(TARGETS))
 
 $(TARGET_OBJS): %.o:src/%.cpp include/random_generator.h
 	$(CXX) $(CXX_CFLAGS) -c $< -o $@
 
-all: $(TARGET_OBJS)
+librandomgen.so: $(TARGET_OBJS)
+	$(CXX) -shared -o $@ $^ -lc
+
+all: librandomgen.so
+
+junk += $(TARGET_OBJS) librandomgen.so
+
+#--------------------------------------------------------------------
+# test
+#--------------------------------------------------------------------
+TEST_TARGET = \
+	test_uniform \
+
+TEST_LINK_FLAGS = -L. -lrandomgen
+
+test_generator.o : test/test_generator.cpp test/test_generator.h include/random_generator.h
+	$(CXX) $(CXX_CFLAGS) -std=c++11 -c $< -o $@
+
+$(TEST_TARGET): %:test/%.cpp test_generator.o librandomgen.so
+	$(CXX) $(CXX_CFLAGS) $< test_generator.o $(TEST_LINK_FLAGS) -o $@
+
+test: $(TEST_TARGET)
+
+.PHONY: test
+junk += $(TEST_TARGET) test_generator.o
+
+#--------------------------------------------------------------------
+# clean up
+#--------------------------------------------------------------------
+
+clean:
+	rm -rf $(junk)
+
+.PHONY: clean
+

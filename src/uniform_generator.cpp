@@ -17,14 +17,14 @@
 
 #include "random_generator.h"
 #include <boost/random/uniform_int_distribution.hpp>
+#include <boost/random/uniform_01.hpp>
 #include <cassert>
 
-/** Generate a sequence of uniform distributed numbers
-  * width:    The width of the number produced (default = 64).
-  * min:      The minimal value to be generated.
-  * max:      The maximal value to be generated.
-  * <return>  One random number at a time.
-  */
+/* integers in uniform distribution in [min, max]
+ * width:    The width of the number produced (default = 64).
+ * min:      The minimal value to be generated.
+ * max:      The maximal value to be generated.
+ */
 uint64_t random_uint_uniform(uint32_t width, uint64_t min, uint64_t max) {
   uint64_t m_min = 0, m_max = UINT64_MAX;
   
@@ -43,4 +43,12 @@ uint64_t random_uint_uniform(uint32_t width, uint64_t min, uint64_t max) {
   // get the random distribution
   boost::random::uniform_int_distribution<uint64_t> ranGen(m_min, m_max);
   return ranGen(gen64);
+}
+
+/* double numbers in uniform distribution in [0, 1)
+ */
+double random_double_uniform_01() {
+  // get the random distribution
+  boost::random::uniform_01<double> ranGen;
+  return ranGen(genDouble);  
 }
