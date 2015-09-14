@@ -1,0 +1,117 @@
+//-----------------------------------------------------------------------------
+// File          : natural_generator.cpp
+// Author        : Wei Song  <wsong83@gmail.com>
+// Created       : 14.09.2015
+// Last modified : 14.09.2015
+//-----------------------------------------------------------------------------
+// Description :
+// Generate random data comply with distribution mimic nature
+//-----------------------------------------------------------------------------
+// Copyright (c) 2015 by Wei Song
+// License: BSD
+//          See LICENSE for more details.
+//------------------------------------------------------------------------------
+// Modification history :
+// 14.09.2015 : created
+//-----------------------------------------------------------------------------
+
+#include "random_generator.h"
+#include <cmath>
+#include <map>
+#include <cassert>
+
+/* Pareto distribution
+ * alpha: define shape
+ * xM:    the minimal value, define scale
+ */
+double random_double_pareto(double alpha, double xM) {
+  assert(alpha > 0);
+  assert(xM > 0);
+
+  double v = random_double_uniform_01();
+  while(v == 0) { v = random_double_uniform_01(); }
+
+  return xM / pow(v, 1/alpha);
+}
+
+/* Pareto bounded distribution
+ * alpha: define shape
+ * L:     the minimal value
+ * H:     the maximal value
+ */
+double random_double_pareto_bounded(double alpha, double L, double H) {
+  assert(alpha > 0);
+  assert(L > 0);
+  assert(H > L);
+
+  double u = random_double_uniform_01();
+  while(u == 0) { u = random_double_uniform_01(); }
+
+  double x = -(u*pow(H,alpha)-u*pow(L,alpha)-pow(H,alpha)) / (pow(H*L,alpha));
+  
+  return pow(x, -1.0/alpha);
+}
+
+/* Self-similar distribution (Pareto principle)
+ * xM:    the maximal value
+ * h:     0<h<1, the percentage
+ */
+double random_double_self_similar(double xM, double h) {
+  assert(xM >0);
+  assert(h > 0);
+  assert(h < 1);
+
+  return xM * pow(random_double_uniform_01(), log(h)/log(1.0 - h));
+}
+
+
+namespace {
+  // helper for zipfian
+  std::map<uint64_t, std::map<double, double> > zeta_cache;
+  double zeta(uint64_t xM, double theta) {
+    if(zeta_cache.count(xM) && zeta_cache[xM].count(theta))
+      return zetan_cache[xM][theta];
+
+    double v = 0;
+    uint64_t index = 1;
+    while(index <= xM) {
+      double step = pow((double)(index), -theta);
+      v += step;
+      if(step > 0.999999) break;  // enough approximate to 1
+    }
+
+    v += (xM - index);
+    zeta_cache[xM][theta] = v;
+    return v;
+  }
+
+  std::map<uint64_t, std::map<double, double> > eta_cache;
+  double eta(uint64_t xM, double theta) {
+    if(eta_cache.count(xM) && eta_cache[xM].count(theta))
+      return etan_cache[xM][theta];
+
+    double v = (1.0 - pow((2.0/xM), (1.0-theta))) / 
+               (1.0 - zetan(2,theta)/zetan(xM, theta));
+
+    eta_cache[xM][theta] = v;
+    return v;
+  }
+}
+
+/* Zipfian's law
+ * xM:    the maximal value
+ * theta: 0<theta<1, skew
+ */
+uint64_t random_uint_zipfian(uint64_t xM, double theta) {
+  double alpha = 1.0 / (1.0 - theta);
+  double u = random_double_uniform_01();
+  doubel uz = u * zeta(xM, theta);
+
+  if(uz < 1.0)
+    return 1;
+  else if(uz < 1.0 + pow(0.5, theta))
+    return 2;
+  else
+    return (uint64_t)(xM * pow(eta(xM, theta) * (u - 1.0) + 1.0, alpha)); 
+}
+  

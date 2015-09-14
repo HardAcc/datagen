@@ -35,8 +35,8 @@ uint64_t random_uint_uniform(uint32_t width, uint64_t min, uint64_t max) {
     m_min = min;
     m_max = max;
   } else {
-    m_min = min < (1 << width) ? min : (1 << width) - 1;
-    m_max = max < (1 << width) ? max : (1 << width) - 1;
+    m_min = min < ((uint64_t)(1) << width) ? min : (1 << width) - 1;
+    m_max = max < ((uint64_t)(1) << width) ? max : (1 << width) - 1;
     assert(m_max >= m_min);
   }
 

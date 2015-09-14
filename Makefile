@@ -31,6 +31,7 @@ TARGETS = \
 	generator \
 	uniform_generator \
 	poisson_generator \
+	normal_generator \
 
 TARGET_OBJS = $(addsuffix .o, $(TARGETS))
 
@@ -49,6 +50,8 @@ junk += $(TARGET_OBJS) librandomgen.so
 #--------------------------------------------------------------------
 TEST_TARGET = \
 	test_uniform \
+	test_poisson \
+	test_normal \
 
 TEST_LINK_FLAGS = -L. -lrandomgen
 

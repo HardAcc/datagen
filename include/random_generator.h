@@ -62,17 +62,58 @@ void set_seed_gen_float(float);
  * width:    The width of the number produced (default = 64).
  * min:      The minimal value to be generated.
  * max:      The maximal value to be generated.
+ * [speed]   1M numbers in 0.05 sec
  */
 uint64_t random_uint_uniform(uint32_t width = 64, uint64_t min = 0, uint64_t max = UINT64_MAX);
 
 /* double in uniform distribution in [0, 1)
+ * [speed]   1M numbers in 0.04 sec
  */
 double random_double_uniform_01();
 
 /* integers in poisson distribution
  * mean:    The mean of the poisson distribution
+ * [speed]   1M numbers poisson(10000) in 0.13 sec
  */
 uint32_t random_uint_poisson(double mean = 1);
+
+/* doubles in exponential distribution
+ * lambda:   reverse mean
+ * [speed]   1M numbers exponential(0.001) in 0.84 sec
+ */
+double random_double_exponential(double lambda = 1);
+
+/* double in normal distribution
+ * mean, sigma
+ * [speed]   1M numbers normal(0,100) in 0.15 sec
+ */
+double random_double_normal(double mean = 0.0, double sigma = 1.0);
+
+/* Pareto distribution
+ * alpha: define shape
+ * xM:    the minimal value, define scale
+ */
+double random_double_pareto(double alpha = 1.0, double xM = 1.0);
+
+/* Pareto bounded distribution
+ * alpha: define shape
+ * L:     the minimal value
+ * H:     the maximal value
+ */
+double random_double_pareto_bounded(double alpha, double L, double H);
+
+/* Self-similar distribution (Pareto principle)
+ * xM:    the maximal value
+ * h:     the percentage
+ */
+double random_double_self_similar(double xM, double h);
+
+/* Zipfian's law
+ * xM:    the maximal value
+ * theta: 0<theta<1, skew
+ */
+uint64_t random_uint_zipfian(uint64_t xM, double theta);
+
 
 #endif
 
