@@ -33,7 +33,7 @@ void test_uint_uniform(uint32_t width, uint32_t size) {
   
   start_timer();
   for(std::vector<uint64_t>::iterator it = tdata.begin(); it != tdata.end(); ++it)
-    *it = random_uint_uniform(width);
+    *it = random_uint_uniform(width, 0, (uint64_t)(1) << 63);
   stop_timer();
 
   std::cout << "random_uint_uniform() generates " << size << " " << width << "-bit uint in " << timer_span() << " second." << std::endl;
