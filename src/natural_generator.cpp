@@ -70,7 +70,7 @@ namespace {
   std::map<uint64_t, std::map<double, double> > zeta_cache;
   double zeta(uint64_t xM, double theta) {
     if(zeta_cache.count(xM) && zeta_cache[xM].count(theta))
-      return zetan_cache[xM][theta];
+      return zeta_cache[xM][theta];
 
     double v = 0;
     uint64_t index = 1;
@@ -88,10 +88,10 @@ namespace {
   std::map<uint64_t, std::map<double, double> > eta_cache;
   double eta(uint64_t xM, double theta) {
     if(eta_cache.count(xM) && eta_cache[xM].count(theta))
-      return etan_cache[xM][theta];
+      return eta_cache[xM][theta];
 
     double v = (1.0 - pow((2.0/xM), (1.0-theta))) / 
-               (1.0 - zetan(2,theta)/zetan(xM, theta));
+               (1.0 - zeta(2,theta)/zeta(xM, theta));
 
     eta_cache[xM][theta] = v;
     return v;
@@ -103,9 +103,13 @@ namespace {
  * theta: 0<theta<1, skew
  */
 uint64_t random_uint_zipfian(uint64_t xM, double theta) {
+  assert(theta > 0);
+  assert(theta < 1);
+  assert(xM > 0);
+
   double alpha = 1.0 / (1.0 - theta);
   double u = random_double_uniform_01();
-  doubel uz = u * zeta(xM, theta);
+  double uz = u * zeta(xM, theta);
 
   if(uz < 1.0)
     return 1;

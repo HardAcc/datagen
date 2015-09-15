@@ -32,6 +32,7 @@ TARGETS = \
 	uniform_generator \
 	poisson_generator \
 	normal_generator \
+	natural_generator \
 
 TARGET_OBJS = $(addsuffix .o, $(TARGETS))
 
@@ -52,6 +53,7 @@ TEST_TARGET = \
 	test_uniform \
 	test_poisson \
 	test_normal \
+	test_natural \
 
 TEST_LINK_FLAGS = -L. -lrandomgen
 

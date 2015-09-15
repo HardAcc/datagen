@@ -92,6 +92,7 @@ double random_double_normal(double mean = 0.0, double sigma = 1.0);
 /* Pareto distribution
  * alpha: define shape
  * xM:    the minimal value, define scale
+ * [speed]   1M numbers in 0.11 sec
  */
 double random_double_pareto(double alpha = 1.0, double xM = 1.0);
 
@@ -99,18 +100,21 @@ double random_double_pareto(double alpha = 1.0, double xM = 1.0);
  * alpha: define shape
  * L:     the minimal value
  * H:     the maximal value
+ * [speed]   1M numbers in 0.31 sec
  */
 double random_double_pareto_bounded(double alpha, double L, double H);
 
 /* Self-similar distribution (Pareto principle)
  * xM:    the maximal value
  * h:     the percentage
+ * [speed]   1M numbers in 0.15 sec
  */
 double random_double_self_similar(double xM, double h);
 
 /* Zipfian's law
  * xM:    the maximal value
  * theta: 0<theta<1, skew
+ * [speed]   1M numbers in 0.63 sec
  */
 uint64_t random_uint_zipfian(uint64_t xM, double theta);
 
