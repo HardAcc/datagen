@@ -19,6 +19,7 @@
 #include <cmath>
 #include <map>
 #include <cassert>
+#include <cstdio>
 
 /* Pareto distribution
  * alpha: define shape
@@ -73,14 +74,30 @@ namespace {
       return zeta_cache[xM][theta];
 
     double v = 0;
+    double v_step_pre = 0;
+    double v_step = 0;
     uint64_t index = 1;
+    uint64_t i_step = 1;
+    double delta = 0;
+    double delta_th = 0.0001;
     while(index <= xM) {
-      double step = pow((double)(index), -theta);
-      v += step;
-      if(step > 0.999999) break;  // enough approximate to 1
+      v_step_pre = v_step;
+      v_step = pow((double)(index), -theta);
+      delta = v_step_pre - v_step;
+      v += v_step * i_step + delta * 0.5 * (i_step - 1);
+      if(delta < delta_th) {
+        i_step *= 8;
+        delta_th /= 20.0;
+      }
+
+      if(i_step == 1 || index + i_step <= xM || index == xM)
+        index += i_step;
+      else {
+        i_step = xM - index;
+        index = xM;
+      }      
     }
 
-    v += (xM - index);
     zeta_cache[xM][theta] = v;
     return v;
   }
@@ -106,6 +123,7 @@ uint64_t random_uint_zipfian(uint64_t xM, double theta) {
   assert(theta > 0);
   assert(theta < 1);
   assert(xM > 0);
+  assert(xM < 0xefffffffffffffff);
 
   double alpha = 1.0 / (1.0 - theta);
   double u = random_double_uniform_01();
