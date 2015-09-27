@@ -62,7 +62,7 @@ double random_double_self_similar(double xM, double h) {
   assert(h > 0);
   assert(h < 1);
 
-  return xM * pow(random_double_uniform_01(), log(h)/log(1.0 - h));
+  return 1 + xM * pow(random_double_uniform_01(), log(h)/log(1.0 - h));
 }
 
 

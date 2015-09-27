@@ -27,7 +27,7 @@ void test_uint_zipfian(uint64_t xM, double theta, uint32_t size);
 int main() {
   test_double_pareto(3.1, 1000, 1<<20);
   test_double_pareto_bounded(4.3, 0.01, 1000, 1<<20);
-  test_double_self_similar(1000, 0.2, 1<<20);
+  test_double_self_similar(4294967295, 0.9, 1<<20);
   test_uint_zipfian(1000, 0.7, 1<<20);
 }
 
