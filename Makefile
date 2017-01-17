@@ -23,6 +23,7 @@ default: all
 #--------------------------------------------------------------------
 CXX = g++
 CXX_CFLAGS = -Iinclude -o3 -fPIC -Wall
+AR = ar
 
 #--------------------------------------------------------------------
 # Build
@@ -42,9 +43,12 @@ $(TARGET_OBJS): %.o:src/%.cpp include/random_generator.h
 librandomgen.so: $(TARGET_OBJS)
 	$(CXX) -shared -o $@ $^ -lc
 
-all: librandomgen.so
+librandomgen.a: $(TARGET_OBJS)
+	$(AR) rvs $@ $^
 
-junk += $(TARGET_OBJS) librandomgen.so
+all: librandomgen.so librandomgen.a
+
+junk += $(TARGET_OBJS) librandomgen.so librandomgen.a
 
 #--------------------------------------------------------------------
 # test
