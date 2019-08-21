@@ -22,7 +22,7 @@ default: all
 # Build rules
 #--------------------------------------------------------------------
 CXX = g++
-CXX_CFLAGS = -Iinclude -o3 -fPIC -Wall
+CXX_CFLAGS = -Iinclude -O3 -fPIC -Wall
 AR = ar
 
 #--------------------------------------------------------------------
