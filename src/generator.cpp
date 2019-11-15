@@ -23,12 +23,12 @@
 #include <iostream>
 
 // generate a random seed
-uint64_t gen_random_seed() {
+uint64_t gen_random_seed(bool print) {
   time_t t;
   time(&t);
   pid_t pid = getpid();
   uint64_t seed = pid * t;
-  std::cout << "Generate random seed " << seed << std::endl;
+  if(print) std::cout << "Generate random seed " << seed << std::endl;
   return seed;
 }
 
@@ -46,8 +46,8 @@ void set_seed_gen64(uint64_t seed) {
 }
 
 // set a random seed for gen64
-void random_seed_gen64() { 
-  gen64.seed(gen_random_seed());
+void random_seed_gen64(bool print) { 
+  gen64.seed(gen_random_seed(print));
 }
 
 // generator for 32-bit integer
@@ -61,8 +61,8 @@ void set_seed_gen32(uint32_t seed) {
 }
 
 // set a random seed for gen32
-void random_seed_gen32() {
-  gen32.seed(gen_random_seed());
+void random_seed_gen32(bool print) {
+  gen32.seed(gen_random_seed(print));
 }
 
 // generator for double
@@ -76,8 +76,8 @@ void set_seed_gen_double(double seed) {
 }
 
 // set a random seed for genDouble
-void random_seed_gen_double() {
-  genDouble.seed(gen_random_seed());
+void random_seed_gen_double(bool print) {
+  genDouble.seed(gen_random_seed(print));
 }
 
 // generator for float
@@ -91,7 +91,7 @@ void set_seed_gen_float(float seed) {
 }
 
 // set a random seed for genFloat
-void random_seed_gen_float() {
-  genFloat.seed(gen_random_seed());
+void random_seed_gen_float(bool print) {
+  genFloat.seed(gen_random_seed(print));
 }
 

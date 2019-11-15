@@ -41,7 +41,7 @@ extern boost::random::mt19937_64 gen64;
 void set_seed_gen64(uint64_t);
 
 // set a random seed for gen64
-void random_seed_gen64();
+void random_seed_gen64(bool print = false);
 
 // generator for 32-bit integer
 // length: 2^19937
@@ -54,7 +54,7 @@ extern boost::random::mt19937 gen32;
 void set_seed_gen32(uint32_t);
 
 // set a random seed for gen32
-void random_seed_gen32();
+void random_seed_gen32(bool print = false);
 
 // generator for double
 // length: ~2^2300000
@@ -73,7 +73,7 @@ extern boost::random::lagged_fibonacci44497 genDouble;
 void set_seed_gen_double(double);
 
 // set a random seed for genDouble
-void random_seed_gen_double();
+void random_seed_gen_double(bool print = false);
 
 // generator for float
 // length: ~10^171
@@ -84,7 +84,7 @@ extern boost::random::ranlux3_01 genFloat;
 void set_seed_gen_float(float);
 
 // set a random seed for genFloat
-void random_seed_gen_float();
+void random_seed_gen_float(bool print = false);
 
 /* integers in uniform distribution in [min, max]
  * width:    The width of the number produced.
